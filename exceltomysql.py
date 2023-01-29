@@ -12,6 +12,7 @@ database = MySQLdb.connect(host="localhost",db="test")
 
 cursor = database.cursor()
 table_name = 'product_and_details'
+#Creating the table
 product_details_table = (f"CREATE TABLE IF NOT EXISTS {table_name}(\
                             id int,product_id varchar(255) NOT NULL,\
                                 product_name text,product_price varchar(255),\
@@ -23,9 +24,11 @@ sleep(1)
 print(f'\nPreparing {table_name}...')
 sleep(1)
 print(f'{table_name} is Prepared.')
-excel_sheet = xlrd.open_workbook(f'{FILE_NAME}.xlsx')
+REMOVE_EXTENTION = FILE_NAME.split('.')[0]
+excel_sheet = xlrd.open_workbook(f'{REMOVE_EXTENTION}.xlsx')
 print(f'Inserting Data into {table_name}')
 sheet_name = excel_sheet.sheet_names()
+# Creating insert Query
 insert_query = "INSERT INTO product_and_details (\
     product_id,product_name,\
         product_price,product_rating,\
@@ -34,7 +37,7 @@ insert_query = "INSERT INTO product_and_details (\
 count = 0
 for sh in range(0,len(sheet_name)):
     sheet= excel_sheet.sheet_by_index(sh)
-    
+    # Inserting Data
     for row in range(1,sheet.nrows):
         product_id = sheet.cell(row,0).value
         product_name = sheet.cell(row,1).value
